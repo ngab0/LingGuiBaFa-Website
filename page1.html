@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ling Gui Ba Fa Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <style>
+        body {
+            min-height: 100vh;
+            background-color: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
+        }
+        .calculator-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #1e293b;
+            box-shadow: 0 0 40px rgba(56, 189, 248, 0.15);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .input-field {
+            background-color: #0f172a;
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        .input-field:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+        }
+        .acupoint-highlight {
+            background-color: rgba(15, 23, 42, 0.7);
+            border-left: 5px solid #38bdf8;
+            transition: all 0.3s ease;
+        }
+        .location-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+        .glow-text {
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+        .ai-logo {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #38bdf8, #3b82f6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+        }
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        .float {
+            animation: float 6s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(56, 189, 248, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(56, 189, 248, 0); }
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .bg-grid {
+            background-image: linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-grid py-12">
+    <div class="calculator-container p-8 rounded-2xl my-8">
+        <div class="flex justify-center items-center mb-8">
+            <div class="ai-logo pulse mr-4">
+                <i class="fas fa-robot text-white text-2xl"></i>
+            </div>
+            <h1 class="text-3xl font-bold text-center text-blue-300 glow-text">Ling Gui Ba Fa AI Calculator</h1>
+        </div>
+        
+        <div class="location-hidden">
+            <p id="locationInfo">Detecting your location...</p>
+            <button id="useLocation">Update Location</button>
+            <div id="locationStatus"></div>
+        </div>
+        
+        <div class="mb-8">
+            <label for="dateTime" class="block text-blue-200 font-semibold mb-2 flex items-center">
+                <i class="fas fa-calendar-alt mr-2 text-blue-400"></i>
+                Select Date and Time:
+            </label>
+            <input type="datetime-local" id="dateTime" class="input-field w-full p-4 rounded-md focus:outline-none" required>
+        </div>
+        
+        <div id="resultSection" class="mb-4 float">
+            <div class="acupoint-highlight p-8 rounded-md">
+                <div class="text-center">
+                    <h3 class="text-lg font-semibold text-blue-300 mb-4">
+                        <i class="fas fa-circle-nodes mr-2"></i>
+                        Calculated Open Point
+                    </h3>
+                    <div class="flex flex-col items-center justify-center space-y-2">
+                        <div class="text-4xl font-bold text-blue-400 glow-text tracking-wide" id="pointCode">--</div>
+                        <div class="text-xl text-gray-300" id="pointName">--</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="mt-10 pt-6 text-center text-blue-200 text-sm border-t border-blue-900">
+            <p><i class="fas fa-info-circle mr-1"></i> Powered by AI and traditional Chinese medicine principles</p>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Reference elements
+            const dateTimeInput = document.getElementById('dateTime');
+            const locationButton = document.getElementById('useLocation');
+            const locationInfo = document.getElementById('locationInfo');
+            const locationStatus = document.getElementById('locationStatus');
+            const pointCode = document.getElementById('pointCode');
+            const pointName = document.getElementById('pointName');
+            
+            // Set default date time to now and calculate
+            setCurrentDateTime();
+            
+            // Set up event listeners
+            dateTimeInput.addEventListener('change', calculateOpenPoint);
+            locationButton.addEventListener('click', getUserLocation);
+            
+            // Try to get user's location on page load
+            getUserLocation();
+            
+            /**
+             * Sets the date-time input to the current time and triggers calculation
+             */
+            function setCurrentDateTime(timezone = null) {
+                const now = new Date();
+                
+                if (timezone) {
+                    try {
+                        // Format date using the specified timezone
+                        const options = {
+                            year: 'numeric',
+                            month: '2-digit',
+                            day: '2-digit',
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            hour12: false,
+                            timeZone: timezone
+                        };
+                        
+                        const formatter = new Intl.DateTimeFormat('en-US', options);
+                        const parts = formatter.formatToParts(now);
+                        const dateObj = {};
+                        
+                        parts.forEach(part => {
+                            if (part.type !== 'literal') {
+                                dateObj[part.type] = part.value;
+                            }
+                        });
+                        
+                        // Format for datetime-local input (YYYY-MM-DDThh:mm)
+                        const formattedDateTime = `${dateObj.year}-${dateObj.month}-${dateObj.day}T${dateObj.hour}:${dateObj.minute}`;
+                        dateTimeInput.value = formattedDateTime;
+                        
+                        // Calculate after setting the time
+                        calculateOpenPoint();
+                        
+                    } catch (error) {
+                        console.error("Error formatting date with timezone:", error);
+                        // Fallback to local time if timezone formatting fails
+                        setLocalTime();
+                    }
+                } else {
+                    // Use local browser time if no timezone provided
+                    setLocalTime();
+                }
+            }
+            
+            /**
+             * Sets the input to the local browser time and triggers calculation
+             */
+            function setLocalTime() {
+                const now = new Date();
+                const year = now.getFullYear();
+                const month = String(now.getMonth() + 1).padStart(2, '0');
+                const day = String(now.getDate()).padStart(2, '0');
+                const hours = String(now.getHours()).padStart(2, '0');
+                const minutes = String(now.getMinutes()).padStart(2, '0');
+                
+                dateTimeInput.value = `${year}-${month}-${day}T${hours}:${minutes}`;
+                
+                // Calculate after setting the time
+                calculateOpenPoint();
+            }
+            
+            /**
+             * Gets the user's location using the Geolocation API
+             */
+            function getUserLocation() {
+                if (!navigator.geolocation) {
+                    return;
+                }
+                
+                navigator.geolocation.getCurrentPosition(
+                    position => {
+                        const { latitude, longitude } = position.coords;
+                        fetchTimezone(latitude, longitude);
+                    },
+                    error => {
+                        setLocalTime();
+                    },
+                    { timeout: 10000 }
+                );
+            }
+            
+            /**
+             * Fetches timezone information using coordinates
+             */
+            function fetchTimezone(latitude, longitude) {
+                try {
+                    // Use browser's timezone detection capability
+                    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+                    
+                    // Set the current date and time based on the detected timezone
+                    setCurrentDateTime(timezone);
+                } catch (error) {
+                    console.error("Error processing timezone data:", error);
+                    setLocalTime();
+                }
+            }
+            
+            /**
+             * Main function to calculate the open point based on date and time
+             */
+            function calculateOpenPoint() {
+                // Get user input
+                const userDateTime = new Date(dateTimeInput.value);
+                
+                if (isNaN(userDateTime.getTime())) {
+                    alert("Please enter a valid date and time");
+                    return;
+                }
+                
+                // Reference starting point: January 1, 1984
+                const referenceDate = new Date('1984-01-01T00:00:00');
+                
+                // Calculate days elapsed
+                const daysElapsed = calculateDaysElapsed(referenceDate, userDateTime);
+                
+                // Calculate sexagenary cycle components
+                const dayStem = calculateDayStem(daysElapsed);
+                const dayBranch = calculateDayBranch(daysElapsed);
+                
+                // Determine hour block and hourly branch/stem
+                const hourlyBranch = getHourlyBranch(userDateTime);
+                const hourlyStem = getHourlyStem(dayStem, hourlyBranch);
+                
+                // Calculate component values
+                const dayStemValue = getStemValue(dayStem);
+                const dayBranchValue = getBranchValue(dayBranch);
+                const hourlyBranchValue = getHourlyBranchValue(hourlyBranch);
+                const hourlyStemValue = getHourlyStemValue(hourlyStem);
+                
+                // Calculate total and determine open point
+                const total = dayStemValue + dayBranchValue + hourlyBranchValue + hourlyStemValue;
+                const stemNumber = parseInt(dayStem.substring(1));
+                const isOdd = stemNumber % 2 === 1;
+                const divisor = isOdd ? 9 : 6;
+                
+                let remainder = total % divisor;
+                if (remainder === 0) remainder = divisor;
+                
+                const openPoint = getOpenPoint(remainder);
+                
+                // Animate the result update
+                pointCode.style.opacity = "0";
+                pointName.style.opacity = "0";
+                
+                // Apply animation and update text
+                setTimeout(() => {
+                    pointCode.textContent = openPoint.code;
+                    pointName.textContent = openPoint.name;
+                    pointCode.style.opacity = "1";
+                    pointName.style.opacity = "1";
+                }, 200);
+            }
+            
+            /**
+             * Calculate days elapsed between two dates
+             */
+            function calculateDaysElapsed(startDate, endDate) {
+                const msPerDay = 24 * 60 * 60 * 1000;
+                return Math.floor((endDate - startDate) / msPerDay);
+            }
+            
+            /**
+             * Calculate day stem (S01-S10)
+             */
+            function calculateDayStem(daysElapsed) {
+                const stemIndex = daysElapsed % 10;
+                return `S${String(stemIndex + 1).padStart(2, '0')}`;
+            }
+            
+            /**
+             * Calculate day branch (B01-B12)
+             */
+            function calculateDayBranch(daysElapsed) {
+                const branchIndex = daysElapsed % 12;
+                return `B${String(branchIndex + 1).padStart(2, '0')}`;
+            }
+            
+            /**
+             * Get hourly branch based on hour of day
+             */
+            function getHourlyBranch(dateTime) {
+                const hour = dateTime.getHours();
+                
+                if ((hour === 23) || (hour === 0)) return 'B01';
+                if (hour === 1 || hour === 2) return 'B02';
+                if (hour === 3 || hour === 4) return 'B03';
+                if (hour === 5 || hour === 6) return 'B04';
+                if (hour === 7 || hour === 8) return 'B05';
+                if (hour === 9 || hour === 10) return 'B06';
+                if (hour === 11 || hour === 12) return 'B07';
+                if (hour === 13 || hour === 14) return 'B08';
+                if (hour === 15 || hour === 16) return 'B09';
+                if (hour === 17 || hour === 18) return 'B10';
+                if (hour === 19 || hour === 20) return 'B11';
+                if (hour === 21 || hour === 22) return 'B12';
+                
+                return 'B01';
+            }
+            
+            /**
+             * Get hourly stem based on day stem and hourly branch
+             */
+            function getHourlyStem(dayStem, hourlyBranch) {
+                const hourlyStemSequences = {
+                    'S01': ['S01','S02','S03','S04','S05','S06','S07','S08','S09','S10','S01','S02'],
+                    'S02': ['S03','S04','S05','S06','S07','S08','S09','S10','S01','S02','S03','S04'],
+                    'S03': ['S05','S06','S07','S08','S09','S10','S01','S02','S03','S04','S05','S06'],
+                    'S04': ['S07','S08','S09','S10','S01','S02','S03','S04','S05','S06','S07','S08'],
+                    'S05': ['S09','S10','S01','S02','S03','S04','S05','S06','S07','S08','S09','S10'],
+                    'S06': ['S01','S02','S03','S04','S05','S06','S07','S08','S09','S10','S01','S02'],
+                    'S07': ['S03','S04','S05','S06','S07','S08','S09','S10','S01','S02','S03','S04'],
+                    'S08': ['S05','S06','S07','S08','S09','S10','S01','S02','S03','S04','S05','S06'],
+                    'S09': ['S07','S08','S09','S10','S01','S02','S03','S04','S05','S06','S07','S08'],
+                    'S10': ['S09','S10','S01','S02','S03','S04','S05','S06','S07','S08','S09','S10']
+                };
+                
+                const hourIndex = parseInt(hourlyBranch.substring(1)) - 1;
+                return hourlyStemSequences[dayStem][hourIndex];
+            }
+            
+            /**
+             * Get value for day stem
+             */
+            function getStemValue(stem) {
+                const stemValues = {
+                    'S01': 10, 'S02': 9, 'S03': 7, 'S04': 8, 'S05': 7,
+                    'S06': 10, 'S07': 9, 'S08': 7, 'S09': 8, 'S10': 7
+                };
+                return stemValues[stem];
+            }
+            
+            /**
+             * Get value for day branch
+             */
+            function getBranchValue(branch) {
+                const branchValues = {
+                    'B01': 7, 'B02': 10, 'B03': 8, 'B04': 8, 'B05': 10, 'B06': 7,
+                    'B07': 7, 'B08': 10, 'B09': 9, 'B10': 9, 'B11': 10, 'B12': 7
+                };
+                return branchValues[branch];
+            }
+            
+            /**
+             * Get value for hourly branch
+             */
+            function getHourlyBranchValue(branch) {
+                const hourlyBranchValues = {
+                    'B01': 9, 'B02': 8, 'B03': 7, 'B04': 6, 'B05': 5, 'B06': 4,
+                    'B07': 9, 'B08': 8, 'B09': 7, 'B10': 6, 'B11': 5, 'B12': 4
+                };
+                return hourlyBranchValues[branch];
+            }
+            
+            /**
+             * Get value for hourly stem
+             */
+            function getHourlyStemValue(stem) {
+                const hourlyStemValues = {
+                    'S01': 9, 'S02': 8, 'S03': 7, 'S04': 6, 'S05': 5,
+                    'S06': 9, 'S07': 8, 'S08': 7, 'S09': 6, 'S10': 5
+                };
+                return hourlyStemValues[stem];
+            }
+            
+            /**
+             * Get open point based on result
+             */
+            function getOpenPoint(result) {
+                const openPoints = {
+                    1: { code: "BL-62", name: "Yang Chaimo" },
+                    2: { code: "KI-6", name: "Yin Chaimo" },
+                    3: { code: "SJ-5", name: "Yang Weimo" },
+                    4: { code: "GB-41", name: "Taimo" },
+                    5: { code: "KI-6", name: "Yin Chaimo" },
+                    6: { code: "SP-4", name: "Chungmo" },
+                    7: { code: "SI-3", name: "Dumo" },
+                    8: { code: "PC-6", name: "Yin Weimo" },
+                    9: { code: "LU-7", name: "Jenmo" }
+                };
+                return openPoints[result];
+            }
+        });
+    </script>
+</body>
+</html>
