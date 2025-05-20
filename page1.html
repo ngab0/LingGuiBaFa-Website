@@ -6,34 +6,39 @@
     <title>Ling Gui Ba Fa Calculator</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
         body {
             min-height: 100vh;
-            background-color: #0f172a;
-            color: #e2e8f0;
+            background: #7a0a0a url('data:image/svg+xml;utf8,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="40" height="40" fill="%23a11a1a"/><text x="10" y="30" font-size="30" fill="%23b91c1c" font-family="Arial">N</text></svg>') repeat;
+            color: #222;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-image: radial-gradient(circle at 50% 50%, #1e293b 0%, #0f172a 100%);
         }
         .calculator-container {
-            max-width: 600px;
+            width: 100%;
+            max-width: 1800px;
             margin: 0 auto;
-            background-color: #1e293b;
-            box-shadow: 0 0 40px rgba(56, 189, 248, 0.15);
-            border: 1px solid rgba(56, 189, 248, 0.2);
+            background-color: #fff;
+            box-shadow: 0 0 40px rgba(120, 10, 10, 0.15);
+            border: 5px solid #7a0a0a;
+            border-radius: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .input-field {
-            background-color: #0f172a;
-            border: 1px solid #334155;
-            color: #e2e8f0;
+            background-color: #fff;
+            border: 1.5px solid #7a0a0a;
+            color: #222;
             transition: all 0.3s ease;
         }
         .input-field:focus {
-            border-color: #38bdf8;
-            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+            border-color: #b91c1c;
+            box-shadow: 0 0 0 2px rgba(185, 28, 28, 0.25);
         }
         .acupoint-highlight {
-            background-color: rgba(15, 23, 42, 0.7);
-            border-left: 5px solid #38bdf8;
+            background-color: #f3f4f6;
+            border-left: 5px solid #b91c1c;
             transition: all 0.3s ease;
         }
         .location-hidden {
@@ -48,17 +53,17 @@
             border-width: 0;
         }
         .glow-text {
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            text-shadow: none;
         }
         .ai-logo {
             width: 60px;
             height: 60px;
-            background: linear-gradient(135deg, #38bdf8, #3b82f6);
+            background: linear-gradient(135deg, #b91c1c, #7a0a0a);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.5);
+            box-shadow: 0 0 15px rgba(185, 28, 28, 0.3);
         }
         .pulse {
             animation: pulse 2s infinite;
@@ -81,48 +86,80 @@
                             linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
             background-size: 20px 20px;
         }
+        .font-handwriting {
+            font-family: 'Pacifico', cursive;
+        }
+        .nav-bar {
+            background: #a11a1a;
+            border-radius: 0 0 1.5rem 1.5rem;
+            box-shadow: 0 2px 8px rgba(120,10,10,0.08);
+        }
+        .nav-link {
+            color: #fff;
+            font-weight: bold;
+            padding: 0.5rem 1.2rem;
+            border-radius: 0.5rem 0.5rem 0 0;
+            background: transparent;
+            transition: background 0.2s, color 0.2s;
+        }
+        .nav-link.active, .nav-link:hover {
+            background: #fff;
+            color: #a11a1a;
+        }
+        .section-title, .text-3xl, .text-4xl, h1, h2, h3 {
+            color: #a11a1a !important;
+            font-weight: bold;
+            letter-spacing: 0.04em;
+        }
+        .border-red-900 {
+            border-color: #7a0a0a !important;
+        }
     </style>
 </head>
-<body class="bg-grid py-12">
-    <div class="calculator-container p-8 rounded-2xl my-8">
-        <div class="flex justify-center items-center mb-8">
-            <div class="ai-logo pulse mr-4">
-                <i class="fas fa-robot text-white text-2xl"></i>
-            </div>
-            <h1 class="text-3xl font-bold text-center text-blue-300 glow-text">Ling Gui Ba Fa AI Calculator</h1>
+<body class="">
+    <div class="w-full flex justify-center" style="margin-top:0;">
+        <div class="w-full max-w-4xl flex items-center justify-between bg-white rounded-t-2xl rounded-b-2xl shadow-lg px-2 py-1 mb-0 border-4 border-red-900" style="border-bottom-left-radius: 2.5rem; border-bottom-right-radius: 2.5rem; margin-top:0;">
+            <span class="italic text-black text-base font-handwriting" style="line-height:1.1;">Ancient<br>Methods</span>
+            <span class="text-2xl md:text-3xl font-extrabold tracking-wide text-red-800 text-center" style="letter-spacing: 0.08em;">LING GUI BA FA CALCULATOR</span>
+            <span class="italic text-black text-base font-handwriting" style="line-height:1.1;">Modern<br>Applications</span>
         </div>
-        
+    </div>
+    <nav class="w-full flex justify-center mb-1 nav-bar" style="margin-top:0;">
+        <div class="flex space-x-2 px-2 py-1 mt-0">
+            <a href="page1.html" class="nav-link active" style="font-size:1rem;">Open Point</a>
+            <a href="8-psychic-points.html" class="nav-link" style="font-size:1rem;">8 Psychic Points</a>
+        </div>
+    </nav>
+    <div class="calculator-container p-2 rounded-2xl my-2">
         <div class="location-hidden">
             <p id="locationInfo">Detecting your location...</p>
             <button id="useLocation">Update Location</button>
             <div id="locationStatus"></div>
         </div>
         
-        <div class="mb-8">
-            <label for="dateTime" class="block text-blue-200 font-semibold mb-2 flex items-center">
-                <i class="fas fa-calendar-alt mr-2 text-blue-400"></i>
+        <div class="mb-4" style="margin-bottom:0.5rem;">
+            <label for="dateTime" class="block text-red-700 font-semibold mb-1 flex items-center">
+                <i class="fas fa-calendar-alt mr-2 text-red-700"></i>
                 Select Date and Time:
             </label>
-            <input type="datetime-local" id="dateTime" class="input-field w-full p-4 rounded-md focus:outline-none" required>
+            <input type="datetime-local" id="dateTime" class="input-field w-full p-2 rounded-md focus:outline-none" required>
         </div>
         
-        <div id="resultSection" class="mb-4 float">
-            <div class="acupoint-highlight p-8 rounded-md">
-                <div class="text-center">
-                    <h3 class="text-lg font-semibold text-blue-300 mb-4">
+        <div id="resultSection" class="mb-2 float" style="margin-bottom:0.5rem;">
+            <div class="acupoint-highlight p-4 rounded-md">
+                <div class="text-center w-full flex flex-col items-center">
+                    <h3 class="text-lg font-semibold mb-2" style="margin-bottom:0.5rem;">
                         <i class="fas fa-circle-nodes mr-2"></i>
                         Calculated Open Point
                     </h3>
-                    <div class="flex flex-col items-center justify-center space-y-2">
+                    <div class="flex flex-col items-center justify-center space-y-1 w-full" style="gap:0.5rem;">
                         <div class="text-4xl font-bold text-blue-400 glow-text tracking-wide" id="pointCode">--</div>
-                        <div class="text-xl text-gray-300" id="pointName">--</div>
+                        <div class="text-xl text-red-800 font-extrabold" id="pointName" style="margin-bottom:0.25rem;">--</div>
+                        <img id="pointImage" src="" alt="Open Point Image" class="mt-1 rounded-lg shadow-lg" style="display:none; width: 1000px; height: 350px; object-fit: contain; margin-top:0.25rem;" />
+                        <div id="pointLocation" class="mt-2 text-base text-center flex justify-center items-center" style="display:none;"></div>
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="mt-10 pt-6 text-center text-blue-200 text-sm border-t border-blue-900">
-            <p><i class="fas fa-info-circle mr-1"></i> Powered by AI and traditional Chinese medicine principles</p>
         </div>
     </div>
     
@@ -292,13 +329,37 @@
                 // Animate the result update
                 pointCode.style.opacity = "0";
                 pointName.style.opacity = "0";
-                
+                const pointImage = document.getElementById('pointImage');
+                pointImage.style.opacity = "0";
+                pointImage.style.display = "none";
+                const pointLocation = document.getElementById('pointLocation');
+                pointLocation.style.opacity = "0";
+                pointLocation.style.display = "none";
                 // Apply animation and update text
                 setTimeout(() => {
                     pointCode.textContent = openPoint.code;
                     pointName.textContent = openPoint.name;
                     pointCode.style.opacity = "1";
                     pointName.style.opacity = "1";
+                    // Set image source and show image
+                    pointImage.src = `${openPoint.code}.jpg`;
+                    pointImage.alt = openPoint.name + ' Image';
+                    pointImage.style.display = "block";
+                    pointImage.style.opacity = "1";
+                    // Set location description and show it
+                    const locationDescriptions = {
+                        "BL-62": "On the lateral side of the foot, approximately 0.5 cun inferior to the inferior border of the lateral malleolus, in a depression posterior of the peroneal tendons",
+                        "GB-41": "Ask the patient to abduct their little toe in order to make the branch of m.extensor digitorum longus more prominent. Run a finger from GB-43 towards the ankle, along the interspace between the fourth and fifth metatarsals until it passes over this branch into the significant depression immediately beyond the tendon",
+                        "KI-6": "1 cun below the prominence of the medial malleolus, in the groove formed by two ligamentous bundles",
+                        "LU-7": "On the radial aspect of the forearm, approximately 1.5 cun proximal to LI-5, in the cleft between the tendons of brachioradialis and abductor pollicis longus",
+                        "PC-6": "On the flexor aspect of the forearm, 2 cun proximal to PC-7, between the tendons of palmaris longus and flexor carpi radialis",
+                        "SI-3": "On the ulnar border of the hand, in the substantial depression proximal to the head of the fifth metacarpal bone",
+                        "SJ-5": "2 cun proximal to SJ-4, in the depression between the radius and the ulna, on the radial side of the extensor digitorum communis tendons",
+                        "SP-4": "On the medial side of the foot, in the depression distal and inferior to the base of the first metatarsal bone"
+                    };
+                    pointLocation.innerHTML = `<div style='display:flex;align-items:center;justify-content:center;gap:0;'><span class='inline-block border border-gray-400 rounded-l px-3 py-2 font-semibold bg-white text-gray-800' style='font-size: 1rem;'>Location</span><span class='inline-block border-t border-b border-r border-gray-400 rounded-r px-3 py-2 bg-white text-gray-800' style='min-width:200px;text-align:left;font-size: 1rem;'>${locationDescriptions[openPoint.code] || ''}</span></div>`;
+                    pointLocation.style.display = "block";
+                    pointLocation.style.opacity = "1";
                 }, 200);
             }
             
