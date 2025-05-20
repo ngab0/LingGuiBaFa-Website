@@ -11,7 +11,7 @@ This project is a web-based calculator for determining the open acupuncture poin
 # Points Reference
 
 ## SI-3 (DUMO)
-- **Image:** `SI-3.jpg`
+![SI-3](SI-3.jpg)
 - **Location:** On the ulnar border of the hand, in the substantial depression proximal to the head of the fifth metacarpal bone
 - **Description:**
   > Dumo is the main Yang meridian.
@@ -22,7 +22,7 @@ This project is a web-based calculator for determining the open acupuncture poin
 ---
 
 ## LU-7 (JENMO)
-- **Image:** `LU-7.jpg`
+![LU-7](LU-7.jpg)
 - **Location:** On the radial aspect of the forearm, approximately 1.5 cun proximal to LI-5, in the cleft between the tendons of brachioradialis and abductor pollicis longus
 - **Description:**
   > Jenmo is the main Yin meridian.
@@ -32,7 +32,7 @@ This project is a web-based calculator for determining the open acupuncture poin
 ---
 
 ## SP-4 (CHUNGMO)
-- **Image:** `SP-4.jpg`
+![SP-4](SP-4.jpg)
 - **Location:** On the medial side of the foot, in the depression distal and inferior to the base of the first metatarsal bone
 - **Description:**
   > Chungmo is the reservoir of hereditary Chi and Ching. It is therefore the foundation for eradicating hereditary and constitutional weaknesses. I.e., all problems that can be tied into inheritance, and constitutional debility.
@@ -40,7 +40,7 @@ This project is a web-based calculator for determining the open acupuncture poin
 ---
 
 ## GB-41 (TAIMO)
-- **Image:** `GB-41.jpg`
+![GB-41](GB-41.jpg)
 - **Location:** Ask the patient to abduct their little toe in order to make the branch of m.extensor digitorum longus more prominent. Run a finger from GB-43 towards the ankle, along the interspace between the fourth and fifth metatarsals until it passes over this branch into the significant depression immediately beyond the tendon
 - **Description:**
   > Taimo is used in conjunction with Yangweimo
@@ -48,7 +48,7 @@ This project is a web-based calculator for determining the open acupuncture poin
 ---
 
 ## KI-6 (YINCHAIMO)
-- **Image:** `KI-6.jpg`
+![KI-6](KI-6.jpg)
 - **Location:** 1 cun below the prominence of the medial malleolus, in the groove formed by two ligamentous bundles
 - **Description:**
   > It is a master yin meridian, and its characteristic symptom is fluid retention, venous stagnation and all their attendant symptoms (coldness, heat flashes, circulatory disturbances, varicose veins, etc.).
@@ -57,7 +57,7 @@ This project is a web-based calculator for determining the open acupuncture poin
 ---
 
 ## BL-62 (YANGCHAIMO)
-- **Image:** `BL-62.jpg`
+![BL-62](BL-62.jpg)
 - **Location:** On the lateral side of the foot, approximately 0.5 cun inferior to the inferior border of the lateral malleolus, in a depression posterior of the peroneal tendons
 - **Description:**
   > It is a master yang meridian, and its characteristic symptoms are a tendency to high blood pressure, locomotion and articulation problems, lumbago, rheumatism (showing its affinity for the adrenal cortex). Its overactivity leads to obsessions, manic depressive states, paranoia, insomnía, spasms, epilepsy,etc.
@@ -65,7 +65,7 @@ This project is a web-based calculator for determining the open acupuncture poin
 ---
 
 ## PC-6 (YINWEIMO)
-- **Image:** `PC-6.jpg`
+![PC-6](PC-6.jpg)
 - **Location:** On the flexor aspect of the forearm, 2 cun proximal to PC-7, between the tendons of palmaris longus and flexor carpi radialis
 - **Description:**
   > Deficiency in the yinweimo is indicated in pain in the genitals, especially in women during coition. It is indicated in people who have a history of excess coldness (lack of animal heat).
@@ -74,7 +74,7 @@ This project is a web-based calculator for determining the open acupuncture poin
 ---
 
 ## SJ-5 (YANGWEIMO)
-- **Image:** `SJ-5.jpg`
+![SJ-5](SJ-5.jpg)
 - **Location:** 2 cun proximal to SJ-4, in the depression between the radius and the ulna, on the radial side of the extensor digitorum communis tendons
 - **Description:**
   > Yangweimo has the main function of protecting the body from external hazards, as well as adjusting the body to the external environment. Its deficiency is indicated by poor resistance to infection, and adjusting to cold temperatures. 
